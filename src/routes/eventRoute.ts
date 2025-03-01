@@ -5,21 +5,16 @@ import exp from "constants";
 const router = express.Router();
 
 router.get("/", async (req, res) => {
-  if (req.query.pageSize && req.query.pageNo) {
-    const pageSize = parseInt(req.query.pageSize as string);
-    const pageNo = parseInt(req.query.pageNo as string);
-    const events = await service.getAllEventsWithPagination(pageSize, pageNo);
-    const totalEvents = await service.count();
-    // res.json({ totalEvents, events });
-    res.setHeader("x-total-count", totalEvents.toString());
-    res.json(events);
-  } else if (req.query.category) {
-    const category = req.query.category;
-    const filteredEvents = await service.getEventByCategory(category as string);
-    res.json(filteredEvents);
-  } else {
-    res.json(await service.getAllEvents());
-  }
+  const pageSize = parseInt(req.query.pageSize as string) || 3;
+  const pageNo = parseInt(req.query.pageNo as string) || 1;
+  const keyword = req.query.keyword as string;
+  const result = await service.getAllEventsWithPagination(
+    keyword,
+    pageSize,
+    pageNo
+  );
+  res.setHeader("X-Total-Count", result.count.toString());
+  res.json(result.events);
 });
 
 router.get("/:id", async (req, res) => {
