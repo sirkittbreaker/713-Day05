@@ -13,6 +13,10 @@ router.get("/", async (req, res) => {
     pageSize,
     pageNo
   );
+  if (result.events.length === 0) {
+    res.status(404).send("No event found");
+    return;
+  }
   res.setHeader("X-Total-Count", result.count.toString());
   res.json(result.events);
 });
