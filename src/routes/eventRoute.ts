@@ -8,7 +8,11 @@ router.get("/", async (req, res) => {
   if (req.query.pageSize && req.query.pageNo) {
     const pageSize = parseInt(req.query.pageSize as string);
     const pageNo = parseInt(req.query.pageNo as string);
-    res.json(await service.getAllEventsWithPagination(pageSize, pageNo));
+    const events = await service.getAllEventsWithPagination(pageSize, pageNo);
+    const totalEvents = await service.count();
+    // res.json({ totalEvents, events });
+    res.setHeader("x-total-count", totalEvents.toString());
+    res.json(events);
   } else if (req.query.category) {
     const category = req.query.category;
     const filteredEvents = await service.getEventByCategory(category as string);

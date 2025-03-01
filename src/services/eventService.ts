@@ -20,3 +20,7 @@ export function addEvent(newEvent: Event) {
 export function getAllEventsWithPagination(pageSize: number, pageNo: number) {
   return repo.getAllEventsWithOrganizerPagination(pageSize, pageNo);
 }
+
+export function count() {
+  return repo.countEvent();
+}
