@@ -18,7 +18,8 @@ router.get("/", async (req, res) => {
       res.status(404).send("No event found");
       return;
     }
-    res.setHeader("X-Total-Count", result.count.toString());
+    res.setHeader("x-total-count", result.count.toString());
+    res.setHeader("Access-Control-Expose-Headers", "x-total-count");
     res.json(result.events);
   } catch (error) {
     if (pageNo < 1 || pageSize < 1) {
