@@ -12,3 +12,7 @@ export async function getAllParticipantsWithPagination(
   );
   return pageParticipants;
 }
+
+export async function getParticipantById(id: number) {
+  return repo.getParticipantById(id);
+}

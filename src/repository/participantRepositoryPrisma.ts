@@ -3,6 +3,26 @@ import type { Participant, PageParticipant } from "../models/participant";
 
 const prisma = new PrismaClient();
 
+export async function getParticipantById(id: number) {
+  return prisma.participant.findUnique({
+    where: { id },
+    include: {
+      events: {
+        select: {
+          id: true,
+          category: true,
+          title: true,
+          description: true,
+          location: true,
+          date: true,
+          time: true,
+          petsAllowed: true,
+        },
+      },
+    },
+  });
+}
+
 export async function getAllParticipantsWithPagination(
   keyword: string,
   pageSize: number,
