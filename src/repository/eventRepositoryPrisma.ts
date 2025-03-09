@@ -73,12 +73,12 @@ export async function getAllEventsWithOrganizerPagination(
   pageSize: number,
   pageNo: number
 ) {
-  const where = {
+  const where: any = {
     OR: [
-      { title: { contains: keyword } },
-      { description: { contains: keyword } },
-      { category: { contains: keyword } },
-      { organizer: { name: { contains: keyword } } },
+      { title: { contains: keyword, mode: "insensitive" } },
+      { description: { contains: keyword, mode: "insensitive" } },
+      { category: { contains: keyword, mode: "insensitive" } },
+      { organizer: { name: { contains: keyword, mode: "insensitive" } } },
     ],
   };
 
