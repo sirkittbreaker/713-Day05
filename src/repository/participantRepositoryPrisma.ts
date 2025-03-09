@@ -22,11 +22,13 @@ export async function getAllParticipantsWithPagination(
       events: {
         select: {
           id: true,
-          title: true,
           category: true,
+          title: true,
           description: true,
           location: true,
           date: true,
+          time: true,
+          petsAllowed: true,
         },
       },
     },
