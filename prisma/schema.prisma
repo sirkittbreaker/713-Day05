@@ -8,16 +8,15 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// datasource db {
-//   provider = "mysql"
-//   url      = env("DATABASE_URL")
-
-// }
-
 datasource db {
-  provider = "postgresql"
-  url      = env("DIRECT_URL")
+  provider = "mysql"
+  url      = env("DATABASE_URL")
 }
+
+// datasource db {
+//   provider = "postgresql"
+//   url      = env("DIRECT_URL")
+// }
 
 model event {
   id           Int           @id @default(autoincrement())
@@ -37,6 +36,22 @@ model organizer {
   id     Int     @id @default(autoincrement())
   name   String
   events event[]
+  userId Int?    @unique
+  user   user?   @relation(fields: [userId], references: [id])
+}
+
+model user {
+  id        Int        @id @default(autoincrement())
+  username  String     @unique
+  password  String?
+  roles     role[]
+  organizer organizer?
+}
+
+model role {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  users user[]
 }
 
 model participant {
