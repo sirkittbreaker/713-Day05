@@ -12,6 +12,7 @@ import { uploadFile } from "./services/uploadFileService";
 const app = express();
 const allowedOrigins = [
   "http://localhost:5173",
+  "http://localhost:5174",
   "https://713-day-06-vue.vercel.app",
 ];
 const options: cors.CorsOptions = {
