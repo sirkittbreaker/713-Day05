@@ -2,7 +2,7 @@
 import * as authRepo from "../repository/authRepository";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { PrismaClient } from "@prisma/client";
+import type { RegisterRequest } from "../models/registerRequest";
 
 export function findByUsername(username: string) {
   return authRepo.findByUsername(username);
@@ -25,4 +25,14 @@ export async function getUserFromToken(token: string) {
   }
   const decoded = jwt.verify(token, process.env.JWT_SECRET) as jwt.JwtPayload;
   return await authRepo.findByUserId(decoded.userId);
+}
+
+export function registerUser(registerRequest: RegisterRequest) {
+  const { organizerName, username, password } = registerRequest;
+  return authRepo.registerUser(
+    organizerName,
+    username,
+    bcrypt.hashSync(password),
+    ["ROLE_USER"]
+  );
 }

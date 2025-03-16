@@ -27,3 +27,42 @@ export function findByUserId(userId: number) {
     },
   });
 }
+
+export async function registerUser(
+  organizerName: string,
+  username: string,
+  password: string,
+  roleNames: string[]
+) {
+  const roles = await prisma.role.findMany({
+    where: {
+      name: {
+        in: roleNames,
+      },
+    },
+  });
+
+  // Create the user with associated roles
+  return prisma.user.create({
+    data: {
+      username: username,
+      password: password,
+      roles: {
+        connect: roles.map((role) => ({ id: role.id })),
+      },
+      organizer: {
+        create: {
+          name: organizerName,
+        },
+      },
+    },
+    include: {
+      roles: true,
+      organizer: {
+        include: {
+          events: true,
+        },
+      },
+    },
+  });
+}
