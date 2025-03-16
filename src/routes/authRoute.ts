@@ -1,6 +1,7 @@
 import * as authService from "../services/authService";
 import express from "express";
 import type { role } from "@prisma/client";
+import * as authMiddleware from "../middleware/authMiddleware";
 const router = express.Router();
 router.post("/authenticate", async (req, res) => {
   const { username, password } = req.body;
@@ -34,5 +35,30 @@ router.post("/authenticate", async (req, res) => {
     },
   });
 });
+
+router.get("/me", authMiddleware.protect, async (req, res) => {
+  const user = req.body.user;
+  res.status(200).json({
+    status: "success",
+    user: {
+      id: user.id,
+      username: user.organizer?.name || "unknown",
+      events: user.organizer?.events || [],
+      roles: user.roles.map((role: role) => role.name),
+    },
+  });
+});
+
+router.post(
+  "/admin",
+  authMiddleware.protect,
+  authMiddleware.checkAdmin,
+  async (req, res) => {
+    res.status(200).json({
+      status: "success",
+      message: "You are an admin",
+    });
+  }
+);
 
 export default router;

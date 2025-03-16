@@ -21,7 +21,7 @@ app.use(cors(options));
 app.use(express.json());
 app.use("/events", eventRoute);
 app.use("/participants", participantRoute);
-app.use("/auth", authRoute);
+app.use("/api/v1/auth", authRoute);
 const port = process.env.PORT || 3000;
 
 const upload = multer({ storage: multer.memoryStorage() });
